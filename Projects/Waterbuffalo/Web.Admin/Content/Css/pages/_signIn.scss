@@ -1,0 +1,33 @@
+﻿@import '../utilities/_variables.scss';
+@import "../utilities/mixins";
+
+
+.signIn-box {
+    width: 360px;
+    margin: 7% auto;
+
+    .signIn-logo {
+        margin-bottom: 25px;
+
+		img {
+			width: 200px;
+		}
+    }
+
+    .signIn-box-msg {
+        margin: 0;
+        text-align: center;
+        padding: 0 20px 20px 20px;
+    }
+
+    .signIn-box-body {
+        background: #fff;
+        padding: 20px;
+        border-top: 0;
+        color: #666;
+    }
+
+    .form-control-feedback {
+        color: #777;
+    }
+}

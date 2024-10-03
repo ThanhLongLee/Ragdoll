@@ -1,0 +1,81 @@
+﻿@model GomdoriMagazine.Models.CheckinViewModel
+@{
+    ViewBag.Title = "Check-in";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/css/Test.css" rel="stylesheet" />
+
+<div id="checkin-container" class="checkin-container">
+    <!-- Các khối điểm danh sẽ được thêm vào đây thông qua JavaScript -->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    $(document).ready(function () {
+    window.Telegram.WebApp.ready();
+
+    var userId = Telegram.WebApp.initDataUnsafe.user.id;
+
+    function loadCheckinStatus() {
+        $.ajax({
+            url: '@Url.Action("GetCheckinStatus", "Home")',
+            type: 'GET',
+            data: { userId: userId },
+            success: function (data) {
+                if (data) {
+                    renderCheckinBoxes(data);
+                } else {
+                    console.error("Error: No data returned.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching check-in status: ", error);
+            }
+        });
+    }
+
+    function renderCheckinBoxes(data) {
+        $("#checkin-container").empty();
+        for (var i = 1; i <= 10; i++) {
+            var boxClass = "checkin-box";
+            var dayPoints = (i - 1) * 50 + 100;
+
+            if (data.CheckedDays.includes(i)) {
+                boxClass += " checked";
+            } else if (i === data.CurrentDayCount) {
+                boxClass += " current";
+            } else if (i > data.CurrentDayCount) {
+                boxClass += " future";
+            }
+
+            $("#checkin-container").append(`
+                <div class="${boxClass}" data-day="${i}" onclick="checkin(${i})">
+                    <span>Day ${i}</span>
+                    <span class="points">${dayPoints} Points</span>
+                </div>
+            `);
+        }
+    }
+
+    window.checkin = function(day) {
+        $.ajax({
+            url: '@Url.Action("UserCheckin", "Home")',
+            type: 'POST',
+            data: { userId: userId },
+            success: function(result) {
+                if (result.success) {
+                    loadCheckinStatus(); // Refresh the status after successful check-in
+                } else {
+                    alert("Check-in failed: " + result.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error performing check-in: ", error);
+            }
+        });
+    }
+
+    loadCheckinStatus(); // Load the check-in status when the page is ready
+});
+</script>

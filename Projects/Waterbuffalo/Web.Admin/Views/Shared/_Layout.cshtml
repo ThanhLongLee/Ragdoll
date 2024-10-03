@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - App Gomi</title>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/content/css/adminlte")
+    @Styles.Render("~/Content/main")
+    @RenderSection("styles", required: false)
+
+
+</head>
+<body class="hold-transition sidebar-mini">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        <!-- Navbar -->
+        <div class="header-top">
+            <div style="height: 10px;">
+
+            </div>
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light nav-top" style="margin-left:0; border-radius: 10px">
+                <!-- Left navbar links -->
+                <ul class="navbar-nav header-top-left">
+                    <li class="nav-item">
+                        <a class="nav-link toggle-button" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item"><a href="/" class="link-home">Home</a> / @ViewBag.Title</li>
+                </ul>
+                @{Html.RenderAction("RenderRightNavbar", "Employee");}
+            </nav>
+        </div>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar">
+            <div class="main-menu">
+                <!-- Brand Logo -->
+                <a href="/" class="logo-home">
+                    <img src="~/Content/images/logoLogin/logo_login.png" />
+                </a>
+                <!-- Sidebar -->
+                <div class="menu-bottom">
+                    <!-- Sidebar Menu -->
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            @{Html.RenderAction("RenderMenu", "Employee");}
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+                <!-- /.sidebar -->
+            </div>
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper content-main">
+            @{Html.RenderPartial("Partial/_Alerts");}
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+
+    </div>
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/adminlte")
+    @Scripts.Render("~/bundles/main")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

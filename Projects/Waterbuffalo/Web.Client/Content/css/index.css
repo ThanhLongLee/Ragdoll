@@ -1,0 +1,19 @@
+﻿#pointAdd {
+    position: absolute;
+    color: #ff0000;
+    font-size: 20px;
+    display: none;
+    animation: flyAndFade 2s forwards;
+}
+
+@keyframes flyAndFade {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}

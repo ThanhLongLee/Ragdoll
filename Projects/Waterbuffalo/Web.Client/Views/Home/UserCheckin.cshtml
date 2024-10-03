@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "UserCheckin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "User Checkin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkin</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/Content/css/index.css" rel="stylesheet" />
+    <style>
+        .checkin-box {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            display: inline-block;
+            margin: 5px;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bold;
+        }
+
+        .checked {
+            background-color: green;
+            color: white;
+        }
+
+        .today {
+            background-color: yellow;
+        }
+
+        .not-checked {
+            background-color: lightgray;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var userId = Telegram.WebApp.initDataUnsafe.user.id;
+
+            $('#checkinButton').on('click', function () {
+                $.ajax({
+                    url: '@Url.Action("UserCheckin", "Home")',
+                    type: 'POST',
+                    data: JSON.stringify({ userId: userId }),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result) {
+                            updateCheckinStatus();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+
+            function updateCheckinStatus() {
+                $.ajax({
+                    url: '@Url.Action("GetCheckinStatus", "Home")',
+                    type: 'GET',
+                    data: { userId: userId },
+                    success: function (data) {
+                        $('.checkin-box').removeClass('checked today not-checked');
+                        for (var i = 1; i <= 10; i++) {
+                            var statusClass = data.CheckedDays.includes(i) ? 'checked' : 'not-checked';
+                            if (i === data.CurrentDayCount) {
+                                statusClass = 'today';
+                            }
+                            $('#day' + i).addClass(statusClass);
+                        }
+                    }
+                });
+            }
+
+            updateCheckinStatus();
+        });
+    </script>
+</head>
+<body>
+    <h1>Daily Checkin</h1>
+    <div>
+        @for (int i = 1; i <= 10; i++)
+        {
+            <div id="day@(i)" class="checkin-box">@i</div>
+        }
+    </div>
+    <button id="checkinButton">Checkin</button>
+</body>
+</html>
+
+

@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{29D37767-6CBF-4C79-8BF6-A99478707845}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Unity.Core</RootNamespace>
+    <AssemblyName>Unity.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interface\Data\IRepository.cs" />
+    <Compile Include="Interface\Service\Booster\IBoostService.cs" />
+    <Compile Include="Interface\Service\Edition\IEditionSummaryService.cs" />
+    <Compile Include="Interface\Service\Edition\IEditionTOCService.cs" />
+    <Compile Include="Interface\Service\Edition\IEditionService.cs" />
+    <Compile Include="Interface\Service\IBaseService.cs" />
+    <Compile Include="Interface\Service\IDeviceService.cs" />
+    <Compile Include="Interface\Service\Invite\IInviteService.cs" />
+    <Compile Include="Interface\Service\Link\ILinkService.cs" />
+    <Compile Include="Interface\Service\UserBoosters\IUserBoostersService.cs" />
+    <Compile Include="Interface\Service\UserLink\IUserLinkService.cs" />
+    <Compile Include="Interface\Service\UserCheckinss\ICheckinTrackersService.cs" />
+    <Compile Include="Interface\Service\UserCheckinss\IUserCheckinsService.cs" />
+    <Compile Include="Interface\Service\UserDetails\IUserDetailService.cs" />
+    <Compile Include="Interface\Service\UserTelegrams\IUserTelegramService.cs" />
+    <Compile Include="Interface\Service\UserWallet\IUserWallet.cs" />
+    <Compile Include="Interface\Service\User\IAppRoleService.cs" />
+    <Compile Include="Interface\Service\User\IAppUserLoginService.cs" />
+    <Compile Include="Interface\Service\User\IAppUserRoleService.cs" />
+    <Compile Include="Interface\Service\User\IAppUserService.cs" />
+    <Compile Include="Interface\Service\User\IGroupRoleService.cs" />
+    <Compile Include="Interface\Service\User\IRolesInGroupRoleService.cs" />
+    <Compile Include="Interface\Service\User\IUsersInGroupRoleService.cs" />
+    <Compile Include="Model\Boost.cs" />
+    <Compile Include="Model\CheckinStatus.cs" />
+    <Compile Include="Model\CheckinTrackers.cs" />
+    <Compile Include="Model\Device.cs" />
+    <Compile Include="Model\Edition\Edition.cs" />
+    <Compile Include="Model\Edition\EditionSummary.cs" />
+    <Compile Include="Model\Edition\EditionTOC.cs" />
+    <Compile Include="Model\InviteDetails.cs" />
+    <Compile Include="Model\Links.cs" />
+    <Compile Include="Model\Rank.cs" />
+    <Compile Include="Model\UserBoost.cs" />
+    <Compile Include="Model\UserLink.cs" />
+    <Compile Include="Model\UserCheckins.cs" />
+    <Compile Include="Model\UserClick.cs" />
+    <Compile Include="Model\UserDetails.cs" />
+    <Compile Include="Model\UserScore.cs" />
+    <Compile Include="Model\UserTelegrams.cs" />
+    <Compile Include="Model\UserWalletConnection.cs" />
+    <Compile Include="Model\User\AppRole.cs" />
+    <Compile Include="Model\User\AppUser.cs" />
+    <Compile Include="Model\User\AppUserLogin.cs" />
+    <Compile Include="Model\User\AppUserProfile.cs" />
+    <Compile Include="Model\User\AppUserRole.cs" />
+    <Compile Include="Model\User\GroupRole.cs" />
+    <Compile Include="Model\User\RolesInGroupRole.cs" />
+    <Compile Include="Model\User\UsersInGroupRole.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Unity.Common\Unity.Common.csproj">
+      <Project>{aecf11b5-a437-4610-abcd-a7c2ba4a6d32}</Project>
+      <Name>Unity.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interface\Service\UserClick\" />
+    <Folder Include="Interface\Service\UserScore\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,27 @@
+﻿@model Web.Admin.Models.MenuUserPanelViewModel
+<ul class="navbar-nav ml-auto profile-user-right">
+    <!-- User profile Dropdown Menu -->
+    <li class="nav-item dropdown">
+        <a class="nav-link link-profile-right" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+            <img class="img-fluid img-circle img-user-right" src="~/Content/images/logo-user/@Model.ImgUser" alt="@Model.FullName" />
+            <span class="title-name-user">
+                @Model.FullName
+            </span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end">
+            <div class="dropdown-item">
+                <strong>@Model.FullName</strong>
+                <br />
+                <span class="text-muted">@Model.UserName</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="@Url.Action("ProfileUser","Employee")" class="dropdown-item">
+                <span>Tài khoản</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="@Url.Action("SignOut","Account")" class="dropdown-item">
+                <span>Đăng xuất</span>
+            </a>
+        </div>
+    </li>
+</ul>

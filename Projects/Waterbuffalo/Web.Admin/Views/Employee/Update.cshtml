@@ -1,0 +1,209 @@
+﻿@using Web.Admin.Infrastructure.Helper
+@using Unity.Common.Configuration
+
+@model Web.Admin.Models.UpdateUserViewModel
+@{
+    ViewBag.Title = "Nhân viên: " + Model.UserName;
+}
+@{
+    var groupRoles = ViewBag.GroupRoles as List<SelectListItem>;
+}
+
+@using (Html.BeginForm("Update", "Employee", FormMethod.Post, new { id = "frm-employee" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div>
+                        <h4 class="font-weight-bold">@ViewBag.Title</h4>
+                    </div>
+                </div><!-- /.col -->
+                @if (ViewBag.UserRole == AccountRole.Admin || Model.RolesId.Any(x => x.ToString() == "2B5E6D91-F33E-4D95-A6D4-B5F79D993977"))
+                {
+                    <div class="col-sm-6 d-flex justify-content-end">
+                        <a href="@Url.Action("List","Employee", new{area= ""})" class="btn btn-outline-secondary mr-1" role="button">Hủy</a>
+                        <button type="submit" class="btn btn-outline-primary">Lưu</button>
+                    </div>
+                }
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card form-info-order">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                @* Trạng thái *@
+                                <div class="form-group">
+                                    <div class="d-flex flex-wrap">
+                                        @Html.LabelFor(m => m.IsActive, new { @class = "display-inline mr-2" })
+                                        <label class="switch switch-flat switch-small">
+                                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "switch-input" })
+                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                @* Đặt lại mật khẩu *@
+                                <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#modalChangePassword">
+                                    <i class="fas fa-key mr-2"></i>Đặt lại mật khẩu
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                @* Username *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.UserName)
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autocomplete = "off", @readonly = "@readonly" })
+                                </div>
+                                @* FullName *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.FullName)
+                                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                                </div>
+                                @* Email *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email)
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.HiddenFor(m => m.GroupRoleId)
+
+                                @* Nhóm quyền *@
+                                @*<div class="form-group">
+                                @Html.LabelFor(m => m.GroupRoleId)
+                                @Html.DropDownListFor(m => m.GroupRoleId, groupRoles, new { @class = "form-select" })
+                                @Html.ValidationMessageFor(m => m.GroupRoleId, "", new { @class = "text-danger" })
+                            </div>*@
+                            </div>
+                            <div class="col-md-6">
+                                @* Phone *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.PhoneNumber)
+                                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-borderless table-data" id="tbl-list-roles">
+                            <thead>
+                                <tr class="table-primary align-middle">
+                                    <th style="font-size: 20px">Danh sách quyền truy cập</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @if (Model != null && Model.Roles.Any())
+                                        {
+                                            foreach (var item in Model.Roles)
+                                            {
+                                                <table class="table table-sm">
+                                                    <thead>
+                                                        <tr class="table-info"><td><strong>@item.Name</strong></td></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="row p-3">
+                                                                @foreach (var role in item.Children)
+                                                                {
+                                                                    <div class="col-3 my-2 custom-control custom-switch">
+                                                                        <input type="checkbox" class="custom-control-input" name="RolesId" id="@role.Id" value="@role.Id"
+                                                                               @HtmlHelpers.IsCheckedByListGuid(role.Id, Model.RolesId)
+                                                                               @(ViewBag.UserRole == AccountRole.Admin || Model.RolesId.Any(x => x.ToString() == "2B5E6D91-F33E-4D95-A6D4-B5F79D993977") ? "" : "disabled")>
+                                                                        <label class="custom-control-label" for="@role.Id">@role.Description</label>
+                                                                    </div>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @if (Model.Roles.Any(x => x.Name == "employee-edit"))
+            {
+                <div class="col-sm-6 d-flex justify-content-end">
+                    <a href="@Url.Action("List","Employee", new{area= ""})" class="btn btn-outline-secondary mr-1" role="button">Hủy</a>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+<!-- Change Password -->
+<div class="modal fade" id="modalChangePassword" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginRouteForm("AdminEmployeeChangePassword", null, new AjaxOptions() { HttpMethod = "POST", OnBegin = "frmChangePassword.OnBegin", OnSuccess = "frmChangePassword.OnSuccess" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("UserId", Model.Id)
+                <div class="modal-header">
+                    <h5 class="modal-title">Đặt lại mật khẩu</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Tự động tạo mật khẩu</label>
+                    <label class="switch switch-flat switch-small" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        @Html.CheckBox("AutoCreate", true, new { @class = "switch-input" })
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                    <div id="collapseOne" aria-expanded="false" class="collapse">
+                        <h5></h5>
+                        <div class="form-group">
+                            <label for="NewPassword">Mật khẩu</label>
+                            <div class="input-group">
+                                @Html.Password("NewPassword", null, new { @class = "form-control", @minlength = 6, @maxlength = 32 })
+                                <span class="input-group-btn">
+                                    <button class="btn btn-icon" type="button" onfocus="showPassword(this)" onblur="showPassword(this)" data-target="#NewPassword">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-outline-primary">Đặt lại</button>
+                </div>
+            }
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/employee-details")
+}
+
+
+

@@ -1,0 +1,51 @@
+﻿@import '../Utilities/_variables.scss';
+
+@mixin desktop_l {
+    @media (min-width: #{$desktop-l_width}) {
+        @content
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$desktop_width}) {
+        @content
+    }
+}
+
+@mixin tablet {
+    @media (max-width: #{$tablet_width}) {
+        @content
+    }
+}
+
+
+@mixin tablet-min {
+    @media (min-width: #{$tablet_width}) {
+        @content
+    }
+}
+
+
+@mixin mobile_l {
+    @media (max-width: #{$mobile-l_width}) {
+        @content
+    }
+}
+
+@mixin mobile_l-min {
+    @media (min-width: #{$mobile-l_width}) {
+        @content
+    }
+}
+
+@mixin mobile_m-min {
+    @media (min-width: #{$mobile-m_width}) {
+        @content
+    }
+}
+
+@mixin mobile_m {
+    @media (max-width: #{$mobile-m_width}) {
+        @content
+    }
+}

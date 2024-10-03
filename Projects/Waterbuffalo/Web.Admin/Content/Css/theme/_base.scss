@@ -1,0 +1,59 @@
+﻿@import "../utilities/variables";
+@import "../utilities/mixins";
+
+html, body {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    font-size: $font_size;
+    color: $primary_text_color;
+    min-width: 320px;
+    background: #f1f1f1;
+}
+
+ul{
+    padding: 0;
+    margin: 0;
+    li{
+        list-style-type: none;
+    }
+}
+
+.field-validation-error {
+    color: #dc3545;
+}
+
+.modal-dialog{
+    margin-top: 60px;
+}
+
+/* ViaCss: Set the width. It will work since the inline style width is removed. */
+
+
+.select2-container {
+    width: 100%;
+}
+.input-group {
+    .select2-container {
+        flex: 1 1 auto;
+        width: 1%;
+        margin-bottom: 0;
+    }
+
+    > .select2-container--bootstrap4:not(:last-child) .select2-selection {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+select.form-control[multiple], select.form-control[size] {
+	height: 200px;
+
+	> option {
+		font-weight: 500;
+		padding: 5px 2px;
+		color: #000;
+	}
+}
+
+.form-switch {
+    padding-left: 2.5em !important;
+}

@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Danh sách Nhân viên";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <div>
+                    <h4 class="font-weight-bold">@ViewBag.Title</h4>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<div class="alter-status"></div>
+<section class="content">
+    <div class="card form-info-order">
+        <div class="card-body">
+            <div id="filter-data" class="row filter-wrap">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="d-block">Tìm kiếm</label>
+                        <div class="input-group">
+                            <input class="form-control" id="Keyword" name="Keyword" placeholder="Tên đăng nhập, họ tên tài khoản" type="text" value="">
+                            <span class="input-group-btn">
+                                <button id="btnKeyword" type="button" class="btn btn-info btn-flat" style="background-color: #fe5100;"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-text-middle table-text-center table-text-middle table-borderless table-hover table-list-order" id="tbl-data">
+                    <thead>
+                        <tr>
+                            <th class="text-start">Tên</th>
+                            <th class="text-start">Tài khoản</th>
+                            <th>Trạng thái</th>
+                            <th class="text-start"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                <ul id="pagination" class="pagination float-right"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section styles{
+    @Styles.Render("~/content/plugins/jquery-confirm")
+}
+@section scripts{
+
+    @Scripts.Render("~/bundles/plugins/jquery-confirm")
+    @Scripts.Render("~/bundles/employee")
+}

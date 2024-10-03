@@ -1,0 +1,8 @@
+﻿@model List<string>
+
+<div class="col-sm-6 d-flex justify-content-end">
+    @if (Model.FirstOrDefault(x => x == "employee-add") != null)
+    {
+        <a href="@Url.Action("Add","Employee")" class="btn btn-outline-primary" role="button">Thêm nhân viên</a>
+    }
+</div><!-- /.col -->

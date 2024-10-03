@@ -1,0 +1,24 @@
+﻿.title {
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.bg-gradient-to-t {
+    background: linear-gradient(to top, #0399c5, #b8e6e6);
+}
+
+.clicked {
+    transition: all 0.3s ease; /* Thay đổi mượt mà trong 0.3 giây */
+}
+
+    .clicked:hover {
+        transform: scale(1.1); /* Tăng kích thước ảnh khi hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Thêm bóng đổ khi hover */
+        cursor: pointer; /* Thay đổi con trỏ chuột khi hover */
+    }
+
+

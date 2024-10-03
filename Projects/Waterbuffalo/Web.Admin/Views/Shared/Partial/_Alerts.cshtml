@@ -1,0 +1,21 @@
+﻿@using Web.Admin.Infrastructure
+@{
+    var alerts = TempData.ContainsKey(Alert.TempDataKey)
+        ? (List<Alert>)TempData[Alert.TempDataKey]
+        : new List<Alert>();
+    foreach (var alert in alerts)
+    {
+        var dismissableClass = alert.Dismissable ? "alert-dismissable" : null;
+
+
+        <div class="alert alert-@alert.AlertStyle @dismissableClass fade show" role="alert" style="margin-left: 20px; margin-right: 20px; margin-top: 15px;">
+            @Html.Raw(alert.Message)
+            @if (alert.Dismissable)
+            {
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            }
+        </div>
+    }
+}

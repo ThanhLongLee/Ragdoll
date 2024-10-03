@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Tổng quan";
+}
+<h2 class="text-center pt-4 text-bold">Trang quản lý Gomdori</h2>
+
+
+
+<div class="form-group">
+    <h6>Description</h6>
+    <hr />
+    @Html.TextArea("BodyHtml", new { @class = "form-control", rows = 5 })
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/libs/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/libs/ckfinder/ckfinder.js"></script>
+    <script>
+        $(function () {
+            var editor = CKEDITOR.replace("BodyHtml", { customConfig: "config.js" });
+        })
+    </script>
+}

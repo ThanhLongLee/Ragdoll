@@ -1,0 +1,53 @@
+﻿.error-section {
+  background-color: #EB5D27;
+  height: 100vh;
+  position: relative;
+}
+.error-section .error-page {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: 0;
+  padding-bottom: 20px;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.error-section .error-page .error-content {
+  position: relative;
+  text-align: center;
+  padding: 0 0 20px;
+  margin: 0 0 40px;
+}
+.error-section .error-page .error-content:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.35);
+}
+.error-section .error-page .error-content .title {
+  display: block;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 6em;
+}
+.error-section .error-page .error-content p {
+  color: #fff;
+  margin: 25px auto;
+}
+.error-section .error-page .error-content p.heading {
+  font-size: 1.8em;
+  line-height: 1.2;
+  font-weight: 500;
+}
+.error-section .error-page .btn-outline {
+  border-width: 1px;
+  border-color: #fff;
+  color: #fff;
+}

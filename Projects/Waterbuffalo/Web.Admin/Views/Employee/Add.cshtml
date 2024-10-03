@@ -1,0 +1,152 @@
+﻿@using Web.Admin.Infrastructure.Helper
+@using Unity.Common.Configuration
+
+@model Web.Admin.Models.AddUserViewModel
+@{
+    ViewBag.Title = "Thêm nhân viên";
+}
+@{
+    var groupRoles = ViewBag.GroupRoles as List<SelectListItem>;
+}
+
+@using (Html.BeginForm("Add", "Employee", FormMethod.Post, new { id = "frm-employee" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div>
+                        <h4 class="font-weight-bold">@ViewBag.Title</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card form-info-order">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="font-weight-bold pb-1" style="border-bottom: 1px solid #dee2e6;">Thông tin người dùng<span class="text-danger"> *</span></h4>
+                                @* Họ và tên *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.FullName)
+                                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                                </div>
+                                @* Email *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email)
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @* Số điện thoại *@
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.PhoneNumber)
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", autocomplete = "off" })
+                                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="font-weight-bold pb-1" style="border-bottom: 1px solid #dee2e6;">Thông tin đăng nhập<span class="text-danger"> *</span></h4>
+                                @* Tên đăng nhập *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.UserName)
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                                </div>
+                                @* Mật khẩu *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Password)
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+                                @* Xác nhận mật khẩu *@
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ConfirmPassword)
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        @Html.HiddenFor(m => m.GroupRoleId)
+                        <table class="table table-borderless table-data" id="tbl-list-roles">
+                            <thead>
+                                <tr class="table-primary align-middle">
+                                    <th style="font-size: 20px">Danh sách quyền truy cập</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @if (Model != null && Model.Roles.Any())
+                                        {
+                                            foreach (var item in Model.Roles)
+                                            {
+                                                <table class="table table-sm">
+                                                    <thead>
+                                                        <tr class="table-info"><td><strong>@item.Name</strong></td></tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="row p-3">
+                                                                @foreach (var role in item.Children)
+                                                                {
+                                                                    <div class="col-3 my-2 custom-control custom-switch">
+                                                                        <input type="checkbox" class="custom-control-input" name="RolesId" id="@role.Id" value="@role.Id" @HtmlHelpers.IsCheckedByListGuid(role.Id, Model.RolesId)>
+                                                                        <label class="custom-control-label" for="@role.Id">@role.Description</label>
+                                                                    </div>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 py-4">
+                <div class="col-sm-6 d-flex justify-content-end">
+                    <a href="@Url.Action("List","Employee", new{area= ""})" class="btn btn-outline-secondary mr-1" role="button">Hủy</a>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div><!-- /.col -->
+            </div>
+        </div>
+    </section>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $(function () {
+                $("#frm-employee").submit(function () {
+                    if ($(this).valid()) {
+                        extend.loading("body", true, true);
+                    }
+                });
+            })
+        })
+    </script>
+}
+
+
+

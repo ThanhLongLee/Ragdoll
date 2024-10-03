@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragdoll</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <script src="~/lib/js/script.js"></script>
+    <style>
+        body {
+            font-family: "Wix Madefor Display", sans-serif;
+            font-weight: bold;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            padding: 0;
+            margin: 0;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+    <div id="footer" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-xl bg-[#ffbb60] flex justify-around items-center z-50 text-xs sm:text-sm md:text-base">
+        <div id="mine" class="text-center text-[#2b0209] w-1/4 m-1 p-2" onclick="handleClickTap()">
+            <a href="/Home/Buffalo">
+                <img src="~/lib//img/menu_tap.png" class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 mx-auto" />
+
+                <p class="mt-1 text-[black]" id="texttap">TAP</p>
+            </a>
+        </div>
+
+        <div id="friends" class="text-center text-[#85827d] w-1/4 m-1 p-2" onclick="handleClickInvite()">
+            <a href="/Home/Invite">
+                <img src="~/lib//img/menu_invite.png" class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 mx-auto" />
+
+
+                <p class="mt-1 text-[black]" id="textinvite">INVITE</p>
+            </a>
+        </div>
+
+        <div id="earn" class="text-center text-[#85827d] w-1/4 m-1 p-2" onclick="handleClickMision()">
+            <a href="/Home/Mision">
+
+                <img src="~/lib//img/menu_mission.png" class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 mx-auto" />
+
+
+                <p class="mt-1 text-[black]" id="textmision">MISSION</p>
+            </a>
+        </div>
+
+        <div id="airdrop" class="text-center text-[#85827d] w-1/4 m-1 p-2" onclick="handleClickAirdrop()">
+            <a href="/Home/Soon">
+                <img src="~/lib//img/menu_airdrop.png" class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 mx-auto" />
+
+
+                <p class="mt-1 text-[black]" id="textairdrop">AIRDROP</p>
+            </a>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,86 @@
+﻿@using Web.Admin.Infrastructure.Helper
+@using Unity.Common.Configuration
+@model List<string>
+@* Tổng quan *@
+<li class="nav-item menu-item @Html.IsActive("Index", "Home", "active")">
+    <a href="/" class="nav-link">
+        <i class="nav-icon fas fa-th"></i>
+        <p>
+            Overview
+        </p>
+    </a>
+</li>
+
+
+@* Danh mục và hệ thống *@
+@if (@Model.FirstOrDefault(x => x == "employee-view" || x == "group-roles-edit") != null)
+{
+    <li class="nav-item menu-item ">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-wrench"></i>
+            <p>
+                Setting System
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+
+            @if (@Model.FirstOrDefault(x => x == "employee-view") != null)
+            {
+                <li class="nav-item menu-item item-list  @Html.IsActive("List", "Employee", "active") ">
+                    <a href="@Url.Action("List", "Employee")" class="nav-link">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                        <p>
+                            List Employee
+                        </p>
+                    </a>
+                </li>
+            }
+            @*@if (@Model.FirstOrDefault(x => x == "group-roles-edit") != null)
+                {
+                    <li class="nav-item menu-item item-list  @Html.IsActive("ListGroupRole", "GroupRole", "active")">
+                        <a href="@Url.Action("ListGroupRole", "GroupRole")" class="nav-link">
+                            <i class="nav-icon fas fa-box"></i>
+                            <p>
+                                Quán lý quyền truy cập
+                            </p>
+                        </a>
+                    </li>
+                }*@
+        </ul>
+
+
+
+
+    </li>
+}
+
+
+
+@* Edition *@
+@if (@Model.FirstOrDefault(x => x == "edition-view") != null)
+{
+    <li class="nav-item menu-item ">
+        <a href="#" class="nav-link">
+            <i class="nav-icon far fa-newspaper"></i>
+            <p>
+                Edition
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+
+            @if (@Model.FirstOrDefault(x => x == "edition-view") != null)
+            {
+                <li class="nav-item menu-item item-list  @Html.IsActive("List", "Edition", "active") ">
+                    <a href="@Url.Action("List", "Edition")" class="nav-link">
+                        <i class="nav-icon far fa-user-tie"></i>
+                        <p>
+                            List Edition
+                        </p>
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
+}

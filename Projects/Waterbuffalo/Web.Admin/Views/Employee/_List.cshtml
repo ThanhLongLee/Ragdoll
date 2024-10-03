@@ -1,0 +1,41 @@
+﻿@using Unity.Common.Helper
+@model Web.Admin.Models.ListUserViewModel
+
+@if (Model.Users != null && Model.Users.Any())
+{
+    foreach (var item in Model.Users)
+    {
+        <tr>
+            <td class="text-start">
+                @item.Profile.FullName
+            </td>
+            <td class="text-start">
+                @item.UserName
+            </td>
+            <td>
+                <span style="color: @item.Profile.Status.GetColor()">@item.Profile.Status.GetName()</span>
+            </td>
+            <td>
+                @if (!item.Profile.Status.IsDisable())
+                {
+                    if (@Model.Roles.FirstOrDefault(x => x == "employee-edit") != null || @Model.IdLogin == item.Id)
+                    {
+                        <a href="@Url.Action("Update", "Employee", new {area = "", id = item.Id})" class="btn-icon btn btn-outline-info btn-sm">Sửa</a>
+                    }
+                    if (@Model.Roles.FirstOrDefault(x => x == "employee-delete") != null && Model.IdLogin != item.Id)
+                    {
+                        <button onclick="listEmployee.deleteEmployeeClick.call(listEmployee, '@item.Id')" class="btn-icon btn btn-outline-danger btn-sm">Xoá</button>
+                    }
+                }
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="4">
+            <div class="text-center"><i>Không tìm thấy kết quả</i></div>
+        </td>
+    </tr>
+}

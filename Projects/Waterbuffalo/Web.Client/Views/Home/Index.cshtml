@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - Index</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/Content//css/index.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            let clickCooldown = 3000;
+            let clickRecoverRate = 2;
+            let clickRecoveryInterval = null;
+            let lastClickTime = 0;
+
+            window.Telegram.WebApp.ready();
+
+            var user = {
+                Id: Telegram.WebApp.initDataUnsafe.user.id,
+                Firstname: Telegram.WebApp.initDataUnsafe.user.first_name,
+                Lastname: Telegram.WebApp.initDataUnsafe.user.last_name,
+                Username: Telegram.WebApp.initDataUnsafe.user.username
+            };
+
+            $.ajax({
+                url: '@Url.Action("ProcessUser", "Home")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(user),
+                success: function (data) {
+                    $('#username').text(data.Lastname + " " + data.Firstname);
+                    $('#score').text(data.Score);
+                    $('#rankName').text(data.RankName);
+                    $('#rankCount').text(data.RankCount);
+                    $('#clicksRemaining').text(clickCooldown);
+
+                    $('#clickButton').on('click', function () {
+                        const currentTime = new Date().getTime();
+                        if (clickCooldown > 0) {
+                            lastClickTime = currentTime;
+                            clickCooldown -= 1;
+                            $('#clicksRemaining').text(clickCooldown);
+
+                            $.ajax({
+                                url: '@Url.Action("UpdateUserScore", "Home")',
+                                type: 'POST',
+                                data: JSON.stringify({ userId: user.Id }),
+                                contentType: 'application/json',
+                                success: function (data) {
+                                    $('#score').text(data.Score);
+                                    $('#rankName').text(data.RankName);
+
+                                    $('#pointAdd').text('+' + data.PointAdd).show().css({
+                                        top: $('#clickButton').offset().top,
+                                        left: $('#clickButton').offset().left + $('#clickButton').outerWidth() / 2 - $('#pointAdd').outerWidth() / 2
+                                    }).animate({
+                                        top: '-=50',
+                                        opacity: 0
+                                    }, 2000, function () {
+                                        $(this).hide().css({ opacity: 1 });
+                                    });
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Error:', error);
+                                }
+                            });
+                        }
+
+                        if (clickCooldown <= 0) {
+                            $('#clickButton').prop('disabled', true);
+                        }
+                    });
+
+                    function startRecovery() {
+                        if (!clickRecoveryInterval) {
+                            clickRecoveryInterval = setInterval(function () {
+                                if (new Date().getTime() - lastClickTime > 2000 && clickCooldown < 3000) {
+                                    clickCooldown += clickRecoverRate;
+                                    if (clickCooldown > 3000) {
+                                        clickCooldown = 3000;
+                                    }
+                                    $('#clicksRemaining').text(clickCooldown);
+
+                                    if (clickCooldown > 0) {
+                                        $('#clickButton').prop('disabled', false);
+                                    }
+                                }
+                            }, 1000);
+                        }
+                    }
+
+                    startRecovery();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Welcome, <span id="username"></span></h1>
+    <p>Score: <span id="score"></span></p>
+    <p>Rank: <span id="rankName"></span></p>
+    <p>Number of Ranks: <span id="rankCount"></span></p>
+
+    <button id="clickButton">Click to increase score</button>
+    <p>Clicks Remaining: <span id="clicksRemaining">3000</span></p>
+    <div id="pointAdd"></div>
+    <a href="/Home/Test">Điểm danh</a>
+</body>
+</html>

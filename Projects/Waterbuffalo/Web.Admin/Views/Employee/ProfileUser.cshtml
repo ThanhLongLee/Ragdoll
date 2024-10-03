@@ -1,0 +1,129 @@
+﻿@using Web.Admin.Models
+@model Web.Admin.Models.ChangePasswordViewModel
+@{
+    var userInfo = ViewBag.UserInfo as UserViewModel;
+}
+@{
+    ViewBag.Title = "Thông tin tài khoản: " + userInfo.UserName;
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewBag.Title</h1>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-7 m-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="p-3 mb-3 bg-secondary text-white">
+                        Tên đăng nhập: <span>@userInfo.UserName</span>
+                    </div>
+                    <div class="p-3 mb-3 bg-secondary text-white">
+                        Họ tên: <span>@userInfo.Profile.FullName</span>
+                    </div>
+                    <div class="text-center mb-3">
+                        <button class="btn btn-danger m-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChangePassword" aria-expanded="false" aria-controls="collapseExample">
+                            Thay đổi mật khẩu
+                        </button>
+                    </div>
+
+                    <div class="collapse" id="collapseChangePassword">
+                        <div class="card card-body">
+                            @using (Html.BeginForm("ChangePasswordByUserSelf", "Employee", FormMethod.Post, new { id = "frm-employee" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, null, new { @class = "text-danger" })
+                                <div class="form-group mb-4">
+                                    @Html.LabelFor(m => m.OldPassword, new { @class = "control-label" })
+                                    @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.OldPassword, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessage("ErrorOldPassword", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group mb-4">
+                                    @Html.LabelFor(m => m.NewPassword, new { @class = "control-label" })
+                                    @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group mb-4">
+                                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">Thay đổi</button>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Change Password -->
+<div class="modal fade" id="modalChangePassword" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginRouteForm("AdminEmployeeChangePassword", null, new AjaxOptions() { HttpMethod = "POST", OnBegin = "frmChangePassword.OnBegin", OnSuccess = "frmChangePassword.OnSuccess" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("UserId", Model.Id)
+                <div class="modal-header">
+                    <h5 class="modal-title">Đặt lại mật khẩu</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Tự động tạo mật khẩu</label>
+                    <label class="switch switch-flat switch-small" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        @Html.CheckBox("AutoCreate", true, new { @class = "switch-input" })
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                    <div id="collapseOne" aria-expanded="false" class="collapse">
+                        <h5></h5>
+                        <div class="form-group">
+                            <label for="NewPassword">Mật khẩu</label>
+                            <div class="input-group">
+                                @Html.Password("NewPassword", null, new { @class = "form-control", @minlength = 6, @maxlength = 32 })
+                                <span class="input-group-btn">
+                                    <button class="btn btn-icon" type="button" onclick="showPassword(this)" data-target="#NewPassword">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-outline-primary">Đặt lại</button>
+                </div>
+            }
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/employee-details")
+}
+
+
+
+

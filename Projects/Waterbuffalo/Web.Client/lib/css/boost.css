@@ -1,0 +1,45 @@
+﻿.title {
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.bg-gradient-to-t {
+    background: linear-gradient(to top, #0399c5, #b8e6e6);
+}
+
+.gradient-background {
+    position: relative;
+    background: #3D7582;
+    border: none; /* Đặt border cho phần tử */
+    z-index: 0; /* Đặt lớp nền ở phía sau nội dung */
+    border-radius: 10px;
+}
+
+/*gradient-background {
+    position: relative;
+    border: 2px solid rgb(153, 130, 0);*/ /* Đặt border cho phần tử */
+    /*z-index: 0;*/ /* Đặt lớp nền ở phía sau nội dung */
+/*}
+
+.gradient-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #282A2F;*/ /* Màu nền */
+    /*opacity: 0.5;*/ /* Đặt độ mờ cho nền */
+    /*z-index: -1;*/ /* Đặt lớp nền phía sau nội dung */
+    /*border: inherit;
+    border-radius: inherit;
+}*/
+
+.content {
+    position: relative; /* Đặt nội dung lên trên nền */
+    z-index: 1; /* Đảm bảo nội dung được hiển thị trên lớp nền */
+}

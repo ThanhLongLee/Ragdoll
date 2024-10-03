@@ -1,0 +1,121 @@
+﻿.progress-gradient {
+    background: linear-gradient(to right, #90ef89, #d692dd, #726edd);
+}
+
+
+.bg-gradient-to-t {
+    background: linear-gradient(to top, #0399c5, #b8e6e6);
+}
+
+
+.top-glow {
+    box-shadow: 0 -26px 20px rgba(243, 186, 47, 0.3);
+}
+
+.tag {
+    background: linear-gradient(to top, #272a2f, #3a3f46);
+}
+
+/* Define the keyframes for the blinking animation */
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Apply the animation to the dot class */
+/*.dot {
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    animation: blink 1s infinite;
+}*/
+
+/*.circle-outer {
+    background: linear-gradient(to bottom, #575def, #202731);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90vw;
+    height: 90vw;
+    max-width: 360px;
+    max-height: 360px;
+}*/
+
+/*.circle-inner {
+    background: radial-gradient(circle, #4960b2, #282e3e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}*/
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+}
+
+/* CSS cho các màn hình di động */
+@media (max-width: 767px) {
+    .mobile-width {
+        width: 100%;
+    }
+    *{
+        padding: 0;
+        margin: 0;
+    }
+}
+#pointAdd {
+    position: absolute;
+    opacity: 1;
+    transition: opacity 1s ease-out, transform 1s ease-out;
+    transform: translateY(-100px);
+    z-index: 9999; /* Đảm bảo phần tử nổi bật hơn các phần tử khác */
+}
+
+#pointAdd.float {
+    animation: float 1s ease-out;
+}
+
+/*.click-animation {
+    position: absolute;
+    z-index: 9999;
+    opacity: 1;
+    animation: float 1s ease-out forwards;
+    pointer-events: none;
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}*/
+
+.click-animation {
+    opacity: 1;
+    transition: opacity 1s ease-out, transform 1s ease-out;
+    transform: translateY(-100px);
+}
+
+    .click-animation.float {
+        opacity: 0;
+    }
+
+

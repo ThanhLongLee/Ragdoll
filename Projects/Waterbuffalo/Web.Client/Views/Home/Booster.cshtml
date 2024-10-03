@@ -1,0 +1,153 @@
+﻿
+@{
+    ViewBag.Title = "Booster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    const user = {
+        Id: Telegram.WebApp.initDataUnsafe.user.id,
+        Firstname: Telegram.WebApp.initDataUnsafe.user.first_name,
+        Lastname: Telegram.WebApp.initDataUnsafe.user.last_name,
+        Username: Telegram.WebApp.initDataUnsafe.user.username
+    };
+
+    // Lấy danh sách các link khi trang load
+    $.ajax({
+        url: '@Url.Action("LayDanhSachBoosters", "Home")',
+        type: 'GET',
+        data: { userId: user.Id },
+        dataType: 'json',
+        success: function (data) {
+            var linksContainer = $('#linksContainer');
+            linksContainer.empty(); // Xóa nội dung cũ nếu có
+
+            data.forEach(function (link) {
+                // Tạo div chứa thông tin về link
+                var linkElement = $('<div>', {
+                    class: 'relative flex items-center w-full h-20 rounded-lg shadow-lg gradient-background'
+                });
+
+                var leftColumn = $('<div>', {
+                    class: 'w-1/5'
+                });
+
+                leftColumn.append($('<img>', {
+                    src: '/lib/img/engergy.png',
+                    alt: 'img',
+                    class: 'w-8 h-8 ml-6'
+                }));
+
+                linkElement.append(leftColumn);
+
+                // Thêm khối ở giữa (50%)
+                var middleColumn = $('<div>', {
+                    class: 'w-1/2 flex flex-col justify-center ml-6'
+                });
+                middleColumn.append($('<span>', {
+                    text: `+${link.Click}`+ " ENGERGY",
+                    class: 'text-white text-xs mb-1 ml-1'
+                }));
+                var scoreContainer = $('<div>', {
+                    class: 'flex items-center ml-1' // Sử dụng flex để căn giữa ảnh và text
+                });
+
+                // Thêm ảnh vào trong scoreContainer
+                scoreContainer.append($('<img>', {
+                    src: '/lib/img/icon_ragdoll.png', // Đường dẫn đến ảnh của bạn
+                    alt: 'Icon',
+                    class: 'w-6 h-6 mr-2' // Đặt kích thước và khoảng cách bên phải cho ảnh
+                }));
+
+                // Thêm text ScoreAwarded vào trong scoreContainer
+                scoreContainer.append($('<p>', {
+                    text: `${link.ScoreAwarded}`,
+                    class: 'text-white text-sm font-semibold'
+                }));
+
+                // Thêm scoreContainer vào middleColumn
+                middleColumn.append(scoreContainer);
+
+                // Thêm middleColumn vào linkElement
+                linkElement.append(middleColumn);
+
+                // Thêm khối bên phải (30%)
+                var rightColumn = $('<div>', {
+                    class: 'w-1/3 flex items-center justify-center'
+                });
+                if (!link.IsCompleted) {
+                    var startButton = $('<button>', {
+                        text: 'Start',
+                        class: 'start-btn px-2 py-1 bg-[#ffbb60] text-white rounded border-2 border-white rounded-md hover:bg-[#CDAD00 ] text-sm',
+                        onclick: `startLink(${user.Id}, ${link.BoostId}, this)`
+                    });
+                    rightColumn.append(startButton);
+                } else {
+                    rightColumn.append($('<img>', {
+                        src: '/lib/img/check_12533288.png',
+                        alt: 'Success',
+                        class: 'w-6 h-6'
+                    }));
+                }
+                linkElement.append(rightColumn);
+
+                // Thêm linkElement vào linksContainer
+                linksContainer.append(linkElement);
+            });
+        },
+        error: function (xhr, status, error) {
+            $('#messageContainer').text('Error fetching links.');
+        }
+    });
+});
+
+    function startLink(userId, bootstId, buttonElement) {
+    $.ajax({
+        url: '/Home/CheckClickBoost',
+        type: 'POST',
+        data: { userId: userId, bootstId: bootstId },
+        dataType: 'json',
+        success: function (data) {
+                $(buttonElement).parent().find('.start-btn').remove(); // Xóa nút "Start"
+            $(buttonElement).parent().append($('<img>', {
+                src: '/lib/img/check_12533288.png',
+                alt: 'Success',
+                class: 'w-6 h-6'
+            }));
+
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+        }
+    });
+}
+</script>
+<link href="~/lib/css/boost.css" rel="stylesheet" />
+@*<div id="linksContainer"></div>*@
+<div class="bg-gradient-to-t flex justify-center min-h-screen">
+    <div class="w-full text-white font-bold flex flex-col max-w-xl">
+        <div class="px-4 z-10">
+            <div class="flex items-center justify-between text-center mt-4">
+                <div class="flex-1 text-center">
+                    <h4 class="title text-[25px]">BOOSTERS</h4>
+                </div>
+                <a href="/Home/Buffalo">
+                    <svg width="25" height="25" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.79872 1.16648C5.24342 -0.388825 2.72178 -0.388825 1.16648 1.16648C-0.388826 2.72178 -0.388825 5.24342 1.16648 6.79872L11.8677 17.5L1.16648 28.2013C-0.388824 29.7566 -0.388824 32.2782 1.16648 33.8335C2.72178 35.3888 5.24342 35.3888 6.79872 33.8335L17.5 23.1322L28.2013 33.8335C29.7566 35.3888 32.2782 35.3888 33.8335 33.8335C35.3888 32.2782 35.3888 29.7566 33.8335 28.2013L23.1322 17.5L33.8335 6.79872C35.3888 5.24342 35.3888 2.72178 33.8335 1.16648C32.2782 -0.388823 29.7566 -0.388822 28.2013 1.16648L17.5 11.8677L6.79872 1.16648Z" fill="#FFBB60" />
+                    </svg>
+                </a>
+            </div>
+            <div id="linksContainer" class="flex flex-col space-y-1 pt-4">
+
+            </div>
+            </br></br></br>
+        </div>
+    </div>
+</div>
+

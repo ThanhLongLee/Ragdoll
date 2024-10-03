@@ -1,0 +1,8 @@
+CREATE TABLE Ranks
+(
+	Id INT PRIMARY KEY IDENTITY,
+	RankName NVARCHAR(100),
+	MinPoint BIGINT,
+	MaxPoint BIGINT,
+	PointAdd INT	
+)

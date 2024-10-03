@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Rank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/css/rank.css" rel="stylesheet" />
+<div class="bg-gradient-to-t flex justify-center">
+    <div class="w-full bg-gradient-to-t text-white font-bold flex flex-col max-w-xl">
+        <div class="px-4 z-10">
+            <div class="flex items-center justify-between text-center mt-4">
+                <div class="flex-1 text-center">
+                    <h4 class="title text-[25px]">TOTAL <span id="TotalUsers"></span> USERS</h4>
+                </div>
+                <a href="/Home/Buffalo">
+                    <svg width="25" height="25" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.79872 1.16648C5.24342 -0.388825 2.72178 -0.388825 1.16648 1.16648C-0.388826 2.72178 -0.388825 5.24342 1.16648 6.79872L11.8677 17.5L1.16648 28.2013C-0.388824 29.7566 -0.388824 32.2782 1.16648 33.8335C2.72178 35.3888 5.24342 35.3888 6.79872 33.8335L17.5 23.1322L28.2013 33.8335C29.7566 35.3888 32.2782 35.3888 33.8335 33.8335C35.3888 32.2782 35.3888 29.7566 33.8335 28.2013L23.1322 17.5L33.8335 6.79872C35.3888 5.24342 35.3888 2.72178 33.8335 1.16648C32.2782 -0.388823 29.7566 -0.388822 28.2013 1.16648L17.5 11.8677L6.79872 1.16648Z" fill="#FFBB60" />
+                    </svg>
+                </a>
+            </div>
+            <div id="ranks" class="flex flex-col space-y-1 pt-4">
+                <!-- Rank 1 -->
+                <div id="rank1" class="relative flex items-center h-20 w-full bg-[#f79395] rounded-lg shadow-lg px-4">
+                    <span id="userFirstName" class="text-white text-xl font-bold uppercase flex-shrink-0 w-[60%] break-words" style="font-size: 15px;"></span>
+                    <div class="flex items-center justify-center w-[15%]">
+                        <div class="h-8 w-8">
+                            <img src="~/lib/img/icon_ragdoll.png" class="w-full h-full object-contain" />
+                        </div>
+                    </div>
+                    <span id="userPoints" class="text-white text-xl font-bold flex-shrink-0 w-[30%]" style="font-size: 15px;"></span>
+                </div>
+                <!-- Rank 2 and below will be updated dynamically -->
+            </div>
+            </br></br></br>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+$(document).ready(function() {
+    const user = {
+        Id: Telegram.WebApp.initDataUnsafe.user.id,
+        Firstname: Telegram.WebApp.initDataUnsafe.user.first_name,
+        Lastname: Telegram.WebApp.initDataUnsafe.user.last_name,
+        Username: Telegram.WebApp.initDataUnsafe.user.username
+    };
+
+    // Hàm để lấy dữ liệu từ server
+    function fetchUserAndTop10() {
+        $.ajax({
+            url: '/Home/UserAndTop10', // Thay thế với tên controller của bạn
+            type: 'GET',
+            data: { userId: user.Id },
+            dataType: 'json',
+            success: function(data) {
+                // Cập nhật Rank 1 với thông tin người dùng
+                const rank1 = $('#rank1');
+                $('#userFirstName').text(data.UserDetails.RowNum + "."+ data.UserDetails.Firstname + " " + data.UserDetails.Lastname);
+                $('#userPoints').text(`+${data.UserDetails.Score}`);
+                $('#TotalUsers').text(`${data.UserDetails.TotalUsers}`);
+
+                // Cập nhật danh sách top 10
+                const ranksContainer = $('#ranks');
+                data.Top10Users.forEach((user, index) => {
+                    let fullname = user.RowNum + "." + user.Firstname + " " + user.Lastname;  
+                    if (fullname.length > 15) {
+                        fullname = fullname.substring(0, 15) + '...';
+                    }
+                    const rankDiv = $('<div>', {
+                        class: 'relative flex items-center h-20 w-full gradient-background rounded-lg shadow-lg px-4 from-yellow-400 to-black',
+                        html: `
+                        <span class="text-white text-xl font-bold uppercase flex-shrink-0 w-[60%] break-words content" style="font-size: 15px; border: none;">
+                            ${fullname}
+                        </span>
+                        <div class="flex items-center justify-center w-[15%]">
+                            <div class="h-8 w-8" style="border: none;">
+                                <img src="/lib/img/icon_ragdoll.png" class="w-full h-full object-contain content" style="border: none;" />
+                            </div>
+                        </div>
+                        <span class="text-white text-xl font-bold flex-shrink-0 w-[30%] content" style="font-size: 15px; width: 40%; border: none;">
+                            +${user.Score}
+                        </span>
+                        `
+                    });
+
+
+                    ranksContainer.append(rankDiv);
+                });
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }
+
+    // Gọi hàm để lấy dữ liệu và cập nhật giao diện
+    fetchUserAndTop10();
+});
+</script>

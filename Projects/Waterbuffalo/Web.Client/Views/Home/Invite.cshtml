@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Invite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Button để mở cửa sổ chat Telegram -->
+@*<button id="inviteButton" onclick="shareLink()">Invite Friends</button>*@
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Hàm để lấy thông tin người dùng từ Telegram WebApp
+    function initializeUserData() {
+        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+            const user = {
+                Id: Telegram.WebApp.initDataUnsafe.user.id,
+                Firstname: Telegram.WebApp.initDataUnsafe.user.first_name,
+                Lastname: Telegram.WebApp.initDataUnsafe.user.last_name,
+                Username: Telegram.WebApp.initDataUnsafe.user.username
+            };
+
+            return user;
+        } else {
+            alert('Telegram WebApp not initialized.');
+            return null;
+        }
+    }
+
+    // Hàm để mở cửa sổ chat với bạn bè và gửi liên kết
+    function shareLink() {
+        const user = initializeUserData();
+
+        if (!user) {
+            return;
+        }
+
+        const link = `https://t.me/Ragdollwtf_bot/minigame_ragdoll?startapp=${user.Id}`;
+        const message = `Hey! Join this awesome game using the link.`;
+
+        // Mở cửa sổ chat Telegram với liên kết
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function copyLink() {
+        const user = initializeUserData();
+
+        if (!user) {
+            return;
+        }
+
+        const link = `https://t.me/Ragdollwtf_bot/minigame_ragdoll?startapp=${user.Id}`;
+
+        // Tạo một thẻ input tạm thời để sao chép liên kết
+        const tempInput = document.createElement('input');
+        document.body.appendChild(tempInput);
+        tempInput.value = link;
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+    }
+
+    navigator.clipboard.writeText(link).then(() => {
+        console.log('Link copied to clipboard');
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+</script>
+
+<link href="~/lib/css/invite.css" rel="stylesheet" />
+<div class="bg-gradient-to-t flex justify-center">
+    <div class="w-full bg-gradient-to-t text-white h-screen font-bold flex flex-col max-w-xl">
+        <div class="px-4 z-10">
+            <div class="flex items-center justify-between text-center mt-3">
+                <div class="flex-1 text-center">
+                    <h4 class="title text-[22px]">INVITE</h4>
+                    <h6 class="text-[12px] text-black">Get coin INVITE your friend~</h6>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-1 pt-4">
+                <!-- Container chứa ảnh invite1 và các phần tử bên dưới, với border -->
+                <div class="relative flex flex-col justify-center items-center border-solid border-2 border-[#4a7ee0] rounded-md overflow-hidden">
+                    <!-- Ảnh lớn -->
+                    <img src="~/lib/img/invite1.png" alt="Alternate Text" class="w-full h-auto object-cover" style="padding: 0;" />
+
+                    <!-- Container cho phần flex bên dưới ảnh lớn -->
+                    <div class="absolute bottom-0 left-0 right-0 flex justify-center items-center px-4 py-2">
+                        <div class="flex space-x-4">
+                            <img onclick="shareLink()" src="~/lib/img/share.png" alt="Alternate Text" class="w-48 h-12" />
+                            <img onclick="copyLink()" class="clicked w-12 h-12" src="~/lib/img/copy.png" alt="Alternate Text" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container chứa ảnh invite2 -->
+                <div class="flex justify-center">
+                    <img src="~/lib/img/invite2.png" alt="Alternate Text" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
